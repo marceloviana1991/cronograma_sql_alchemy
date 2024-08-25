@@ -1,12 +1,13 @@
 # Cronograma de Tarefas
 
-Projeto em SQLAlchemy de implementação de cronograma de tarefas multi-usuário.
+Projeto em SQLAlchemy de implementação de cronograma de tarefas multi-usuário com retorno de avaliação.
 
 ## Funcionalidades
 
 - Criação de modelos com configuração de ORM
-- Criação de sessão configuração de conexão com banco de dados.
-- Implementação DML no banco de dados (em desenvolvimento)
+- Criação de sessão configuração de conexão com banco de dados
+- Implementação de métodos DML no banco de dados
+- Implementação de métodos assíncronos
 
 ## Documentação da Base de Dados
 

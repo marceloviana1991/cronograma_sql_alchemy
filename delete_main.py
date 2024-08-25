@@ -1,3 +1,14 @@
+"""
+1 - Buscar o registro a ser excluido;
+2 - Exclui o registro;
+3- Salvar a alteração no banco de dados;
+
+OBS: Não é permitido excluir registros que são referência de chave estrangeira em outras tabelas,
+exceto quando o resgistro for refência na tabela 'usuario_cronograma'
+"""
+import asyncio
+from sqlalchemy.future import select
+
 from typing import Optional
 
 from conf.db_session import create_session
@@ -7,46 +18,74 @@ from models.cronograma import Cronograma
 from models.tarefa import Tarefa
 from models.avaliacao import Avaliacao
 
-def deletar_usuario(id: int) ->Optional[Usuario]:
-    with create_session() as session:
-        usuario: Optional[Usuario] = session.query(Usuario).filter(Usuario.id==id).one_or_none()
+
+async def deletar_usuario(id: int) -> Optional[Usuario]:
+    # Verificar referência de chave estrangeira em outras tabelas
+    """
+    Exclui usuário do banco de dados
+    """
+    async with create_session() as session:
+        query = select(Usuario).filter(Usuario.id==id)
+        usuario: Optional[Usuario] = await session.execute(query)
+        usuario = usuario.scalars().first()
         if usuario:
-            session.delete(usuario)
-            session.commit()
+            await session.delete(usuario)
+            await session.commit()
         else:
-            print(f'Usuário não encontrada')
+            return None
     return usuario
 
-def deletar_cronograma(id: int) ->Optional[Cronograma]:
-    with create_session() as session:
-        cronograma: Optional[Cronograma] = session.query(Cronograma).filter(Cronograma.id==id).one_or_none()
+
+async def deletar_cronograma(id: int) -> Optional[Cronograma]:
+    # Verificar referência de chave estrangeira em outras tabelas
+    """
+    Exclui cronograma do banco de dados
+    """
+    async with create_session() as session:
+        query = select(Cronograma).filter(Cronograma.id==id)
+        cronograma: Optional[Cronograma] = await session.execute(query)
+        cronograma = cronograma.scalars().first()
         if cronograma:
-            session.delete(cronograma)
-            session.commit()
+            await session.delete(cronograma)
+            await session.commit()
         else:
-            print(f'Cronograma não encontrado')
+            return None
     return cronograma
 
-def deletar_tarefa(id: int) -> Optional[Tarefa]:
-    with create_session() as session:
-        tarefa: Optional[Tarefa] = session.query(Tarefa).filter(Tarefa.id==id).one_or_none()
+
+async def deletar_tarefa(id: int) -> Optional[Tarefa]:
+    # Verificar referência de chave estrangeira em outras tabelas
+    """
+    Exclui tarefa do banco de dados
+    """
+    async with create_session() as session:
+        query = select(Tarefa).filter(Tarefa.id==id)
+        tarefa: Optional[Tarefa] = await session.execute(query)
+        tarefa = tarefa.scalars().first()
         if tarefa:
-            session.delete(tarefa)
-            session.commit()
+            await session.delete(tarefa)
+            await session.commit()
         else:
-            print(f'Tarefa não encontrada')
+            return None
     return tarefa
 
-def deletar_avaliacao(id: int) -> Optional[Avaliacao]:
-    with create_session() as session:
-        avaliacao: Optional[Avaliacao] = session.query(Avaliacao)\
-            .filter(Avaliacao.id==id).one_or_none()
+
+async def deletar_avaliacao(id: int) -> Optional[Avaliacao]:
+    """
+    Exclui avaliação do banco de dados
+    """
+    async with create_session() as session:
+        query = select(Avaliacao).filter(Avaliacao.id==id)
+        avaliacao: Optional[Avaliacao] = await session.execute(query)
+        avaliacao = avaliacao.scalars().first()
         if avaliacao:
-            session.delete(avaliacao)
-            session.commit()
+            await session.delete(avaliacao)
+            await session.commit()
         else:
-            print(f'Avaliação não encontrada')
+            return None
     return avaliacao  
 
+
 if __name__ == '__main__':
-    pass
+    variavel = asyncio.run()
+    print(variavel)

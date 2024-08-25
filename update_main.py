@@ -5,6 +5,9 @@
 
 OBS: Não faz alteração de parâmetros refentes a chave estrangeira
 """
+import asyncio
+from sqlalchemy.future import select
+
 from conf.db_session import create_session
 
 from models.usuario import Usuario
@@ -14,52 +17,76 @@ from models.avaliacao import Avaliacao
 
 from typing import Optional
 
-def atualizar_usuario(id: int, novo_email: str, nova_senha: str) -> Optional[Usuario]:
-    with create_session() as session:
-        usuario: Optional[Usuario] = session.query(Usuario).filter(Usuario.id==id).one_or_none()
+
+async def atualizar_usuario(id: int, novo_email: str, nova_senha: str) -> Optional[Usuario]:
+    """
+    Atualiza os parametros email e senha de um registro da tabela usuário
+    """
+    async with create_session() as session:
+        query = select(Usuario).filter(Usuario.id==id)
+        usuario: Optional[Usuario] = await session.execute(query)
+        usuario = usuario.scalars().first()
         if usuario:
             usuario.email = novo_email
             usuario.senha = nova_senha
-            session.commit()
+            await session.commit()
         else:
-            print(f'Usuário não encontrado')
+            return None
     return usuario
-    
-def atualizar_cronograma(id: int, novo_nome: str, novo_tamanho: int) -> Optional[Cronograma]:
-    with create_session() as session:
-        cronograma: Optional[Cronograma] = session.query(Cronograma).filter(Cronograma.id==id).one_or_none()
+
+
+async def atualizar_cronograma(id: int, novo_nome: str, novo_tamanho: int) -> Optional[Cronograma]:
+    """
+    Atualiza os parametros nome e tamanho de um registro da tabela cronograma
+    """
+    async with create_session() as session:
+        query = select(Cronograma).filter(Cronograma.id==id)
+        cronograma: Optional[Cronograma] = await session.execute(query)
+        cronograma = cronograma.scalars().first()
         if cronograma:
             cronograma.nome = novo_nome
             cronograma.tamanho = novo_tamanho
-            session.commit()
+            await session.commit()
         else:
-            print(f'Cronograma não encontrado')
+            return None
     return cronograma
     
-def atualizar_cronograma(id: int, novo_nome: str, novo_detalhamento: 
+
+async def atualizar_tarefa(id: int, novo_nome: str, novo_detalhamento: 
                          str, nova_localizacao_no_tamanho: int) -> Optional[Tarefa]:
-    with create_session() as session:
-        tarefa: Optional[Tarefa] = session.query(Tarefa).filter(Tarefa.id==id).one_or_none()
+    """
+    Atualiza os parametros nome, detalhamento e localização no tamanho de um registro da tabela tarefa
+    """
+    async with create_session() as session:
+        query = select(Tarefa).filter(Tarefa.id==id)
+        tarefa: Optional[Tarefa] = await session.execute(query)
+        tarefa = tarefa.scalars().first()
         if tarefa:
             tarefa.nome = novo_nome
             tarefa.detalhamento = novo_detalhamento
             tarefa.localizacao_no_tamanho = nova_localizacao_no_tamanho
-            session.commit()
+            await session.commit()
         else:
-            print(f'Tarefa não encontrada')
+            return None
     return tarefa
 
-def atualizar_avaliacao(id: int, novo_retorno: str) -> Optional[Avaliacao]:
-    with create_session() as session:
-        avaliacao: Optional[Avaliacao] = session.query(Avaliacao).filter(Avaliacao.id==id).one_or_none()
+
+async def atualizar_avaliacao(id: int, novo_retorno: str) -> Optional[Avaliacao]:
+    """
+    Atualiza o parametro retorno de um registro da tabela avaliação
+    """
+    async with create_session() as session:
+        query = select(Avaliacao).filter(Avaliacao.id==id)
+        avaliacao: Optional[Avaliacao] = await session.execute(query)
+        avaliacao = avaliacao.scalars().first()
         if avaliacao:
             avaliacao.retorno = novo_retorno
-            session.commit()
+            await session.commit()
         else:
-            print(f'Avaliação não encontrada')
+            return None
     return avaliacao    
-
-
+    
     
 if __name__ == '__main__':
-    pass
+    variavel = asyncio.run()
+    print(variavel)

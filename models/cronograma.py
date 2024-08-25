@@ -13,7 +13,7 @@ usuario_cronograma = sa.Table(
     'usuario_cronograma',
     ModelBase.metadata,
     sa.Column('id', sa.BigInteger, primary_key=True, autoincrement=True),
-    sa.Column('id_cronograma', sa.Integer, sa.ForeignKey('cronogramas.id', ondelete='CASCADE')),
+    sa.Column('id_cronograma', sa.Integer, sa.ForeignKey('cronogramas.id')),
     sa.Column('id_usuario', sa.Integer, sa.ForeignKey('usuarios.id'))
 )
 
